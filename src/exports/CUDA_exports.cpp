@@ -38,7 +38,7 @@ namespace kernels
     STD_DLL_ENTRY(int)
     alter_kernel(
         unsigned char* contents,
-        int element_count,
+        unsigned long element_count,
         int min_deviation,
         int max_deviation
     )
@@ -48,6 +48,25 @@ namespace kernels
             element_count,
             min_deviation,
             max_deviation
+        );
+
+        if (success == 1)
+            return 0;
+
+        return element_count;
+    }
+
+    STD_DLL_ENTRY(int)
+    pass_kernel(
+        unsigned char* contents,
+        unsigned long element_count,
+        float chance
+    )
+    {
+        auto success = CUDA::kernels::call_pass_kernel(
+            contents,
+            element_count,
+            chance
         );
 
         if (success == 1)

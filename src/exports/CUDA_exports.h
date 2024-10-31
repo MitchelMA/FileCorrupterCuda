@@ -18,7 +18,10 @@ namespace info
 namespace kernels
 {
     STD_DLL_ENTRY(int)
-    alter_kernel(unsigned char* contents, int element_count, int min_deviation, int max_deviation);
+    alter_kernel(unsigned char* contents, unsigned long element_count, int min_deviation, int max_deviation);
+
+    STD_DLL_ENTRY(int)
+    pass_kernel(unsigned char* contents, unsigned long element_count, float chance);
 }
 
 #endif // !CUDA_EXPORTS_H
