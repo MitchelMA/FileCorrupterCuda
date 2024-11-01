@@ -138,7 +138,7 @@ setup_curand(
     const unsigned long time
 )
 {
-    curand_init(time, threadIdx.x, 0, &state[threadIdx.x]);
+    curand_init(time, threadIdx.x, 0, state + threadIdx.x);
 }
 
 __global__ void
@@ -171,15 +171,15 @@ kernel_pass(
     curandState* state
 )
 {
-    curandState* currentRandomState = state + threadIdx.x;
+    curandState currentRandomState = state[threadIdx.x];
 
     unsigned long idx = threadIdx.x + blockDim.x * blockIdx.x;
     unsigned long stride = blockDim.x * gridDim.x;
 
     for (unsigned long i = idx; i < n; i += stride)
     {
-        float random_value = curand_uniform(currentRandomState) * 100.f;
+        float random_value = curand_uniform(&currentRandomState) * 100.f;
         if (random_value <= chance)
-            contents[i] = (unsigned char)(curand_uniform(currentRandomState) * 255.f);
+            contents[i] = (unsigned char)(curand_uniform(&currentRandomState) * 255.f);
     }
 }
