@@ -57,8 +57,10 @@ namespace CUDA::kernels
 
         printf("Altering the given data...\n");
         ::kernel_alter<<<block_count, thread_count>>>(contents_size, cpu_contents, min_deviation, max_deviation, random_states);
+
         printf("Waiting on device synchronization...\n");
         cudaDeviceSynchronize();
+        printf("synchronization done\n");
 
         return 0;
     }
@@ -89,6 +91,7 @@ namespace CUDA::kernels
 
         printf("Waiting on device synchronization...\n");
         cudaDeviceSynchronize();
+        printf("synchronization done\n");
 
         return 0;
     }
