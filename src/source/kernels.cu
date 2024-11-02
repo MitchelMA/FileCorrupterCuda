@@ -49,35 +49,14 @@ namespace CUDA::kernels
         if (cudaMalloc(&random_states, sizeof(curandState) * thread_count) != cudaSuccess)
             return 1;
 
-        unsigned char* gpu_contents;
-        if (cudaMallocManaged(&gpu_contents, sizeof(unsigned char) * contents_size) != cudaSuccess)
-            return 1;
-
-        printf("Copying memory over to CUDA device...\n");
-        cudaMemcpy(
-            gpu_contents, // destination
-            cpu_contents, // source
-            sizeof(unsigned char) * contents_size, // byte count
-            cudaMemcpyHostToDevice // copy kind
-        );
-
         printf("Setting up the random states...\n");
         ::setup_curand<<<1, thread_count>>>(random_states, current_time_count);
 
         printf("Altering the given data...\n");
-        ::kernel_alter<<<block_count, thread_count>>>(contents_size, gpu_contents, min_deviation, max_deviation, random_states);
+        ::kernel_alter<<<block_count, thread_count>>>(contents_size, cpu_contents, min_deviation, max_deviation, random_states);
         printf("Waiting on device synchronization...\n");
         cudaDeviceSynchronize();
 
-        printf("Copying memory back to cpu...\n");
-        cudaMemcpy(
-            cpu_contents,
-            gpu_contents,
-            sizeof(unsigned char) * contents_size,
-            cudaMemcpyDeviceToHost
-        );
-
-        cudaFree(gpu_contents);
         return 0;
     }
 
@@ -96,36 +75,15 @@ namespace CUDA::kernels
         if (cudaMalloc(&random_states, sizeof(curandState) * thread_count) != cudaSuccess)
             return 1;
 
-        unsigned char* gpu_contents;
-        if (cudaMallocManaged(&gpu_contents, sizeof(unsigned char) * contents_size) != cudaSuccess)
-            return 1;
-
-        printf("Copying memory over to CUDA device...\n");
-        cudaMemcpy(
-            gpu_contents, // destination
-            cpu_contents, // source
-            sizeof(unsigned char) * contents_size, // byte count
-            cudaMemcpyHostToDevice // copy kind
-        );
-
         printf("Setting up the random states...\n");
         ::setup_curand<<<1, thread_count>>>(random_states, current_time_count);
 
         printf("Altering the given data...\n");
-        ::kernel_pass<<<block_count, thread_count>>>(contents_size, gpu_contents, chance, random_states);
+        ::kernel_pass<<<block_count, thread_count>>>(contents_size, cpu_contents, chance, random_states);
 
         printf("Waiting on device synchronization...\n");
         cudaDeviceSynchronize();
 
-        printf("Copying memory back to cpu...\n");
-        cudaMemcpy(
-            cpu_contents,
-            gpu_contents,
-            sizeof(unsigned char) * contents_size,
-            cudaMemcpyDeviceToHost
-        );
-
-        cudaFree(gpu_contents);
         return 0;
     }
 
