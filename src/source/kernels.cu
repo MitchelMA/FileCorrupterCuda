@@ -40,9 +40,12 @@ namespace CUDA::kernels
         unsigned char max_deviation
     )
     {
+        struct cudaDeviceProp device_properties;
+        cudaGetDeviceProperties(&device_properties, 0);
+
         auto current_time_count = std::chrono::high_resolution_clock::now().time_since_epoch().count();
 
-        int thread_count = 2 << 9;
+        int thread_count = device_properties.maxThreadsPerBlock;
         int block_count = (contents_size + thread_count - 1) / thread_count;
 
         curandState* random_states;
@@ -66,9 +69,12 @@ namespace CUDA::kernels
         float chance
     )
     {
+        struct cudaDeviceProp device_properties;
+        cudaGetDeviceProperties(&device_properties, 0);
+
         auto current_time_count = std::chrono::high_resolution_clock::now().time_since_epoch().count();
 
-        int thread_count = 2 << 9;
+        int thread_count = device_properties.maxThreadsPerBlock;
         int block_count = (contents_size + thread_count - 1) / thread_count;
 
         curandState* random_states;
