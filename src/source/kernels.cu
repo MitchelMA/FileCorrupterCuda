@@ -60,7 +60,7 @@ namespace CUDA::kernels
             return 1;
 
         unsigned char* gpu_contents;
-        if (cudaMallocManaged(&gpu_contents, sizeof(unsigned char) * contents_size))
+        if (cudaMallocManaged(&gpu_contents, sizeof(unsigned char) * contents_size) != cudaSuccess)
         {
             cudaFree(random_states);
             return 1;
@@ -117,7 +117,7 @@ namespace CUDA::kernels
             return 1;
 
         unsigned char* gpu_contents;
-        if (cudaMallocManaged(&gpu_contents, sizeof(unsigned char) * contents_size))
+        if (cudaMallocManaged(&gpu_contents, sizeof(unsigned char) * contents_size) != cudaSuccess)
         {
             cudaFree(random_states);
             return 1;
@@ -168,7 +168,7 @@ namespace CUDA::kernels
         int block_count = (contents_size + thread_count - 1) / thread_count;
 
         unsigned char* gpu_contents;
-        if (cudaMallocManaged(&gpu_contents, sizeof(unsigned char) * contents_size))
+        if (cudaMallocManaged(&gpu_contents, sizeof(unsigned char) * contents_size) != cudaSuccess)
             return 1;
 
         printf("Copying memory from RAM to VRAM\n");
