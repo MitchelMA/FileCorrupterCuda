@@ -13,7 +13,7 @@ set(CMAKE_LIBRARY_OUTPUT_DIRECTORY
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY
     ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_BINDIR})
 
-set(CUDA_NVCC_FLAGS ${CUDA_NVCC_FLAGS};-gencode arch=compute_20=sm_20 -ccbin=g++13.2)
+set(CUDA_NVCC_FLAGS ${CUDA_NVCC_FLAGS};-gencode arch=compute_20=sm_20 -ccbin=/usr/bin/g++-13.2)
 
 file(GLOB PUBLIC_EXPORT_FILES src/exports/*h src/exports/*.cpp)
 file(GLOB PUBLIC_HEADERS src/include/*.hpp src/include/*.h src/include/*.cuh)

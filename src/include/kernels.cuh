@@ -17,6 +17,12 @@ namespace CUDA::kernels
         float chance
     );
 
+    int call_offset_kernel(
+        unsigned char* cpu_contents,
+        unsigned long contents_size,
+        int offset_amount
+    );
+
 } // namespace CUDA::kernels
 
 

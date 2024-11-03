@@ -35,7 +35,7 @@ namespace info
 namespace kernels
 {
 
-    STD_DLL_ENTRY(int)
+    STD_DLL_ENTRY(unsigned long)
     alter_kernel(
         unsigned char* contents,
         unsigned long element_count,
@@ -56,7 +56,7 @@ namespace kernels
         return element_count;
     }
 
-    STD_DLL_ENTRY(int)
+    STD_DLL_ENTRY(unsigned long)
     pass_kernel(
         unsigned char* contents,
         unsigned long element_count,
@@ -67,6 +67,21 @@ namespace kernels
             contents,
             element_count,
             chance
+        );
+
+        if (success == 1)
+            return 0;
+
+        return element_count;
+    }
+
+    STD_DLL_ENTRY(unsigned long)
+    offset_kernel(unsigned char* contents, unsigned long element_count, int offset_amount)
+    {
+        auto success = CUDA::kernels::call_offset_kernel(
+            contents,
+            element_count,
+            offset_amount
         );
 
         if (success == 1)
